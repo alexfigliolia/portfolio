@@ -40,9 +40,8 @@ export const scaleOut = () => {
 	return { type: 'SCALE_OUT' };
 }
 
-export const navigate = e => {
+export const navigate = page => {
 	return (dispatch, getState) => {
-		const { page } = e.target.dataset;
 		const { page: currentPage, burgerToggle } = getState().Classes; 
 		const int = burgerToggle ? 0 : 800;
 		if(int > 0) dispatch(toggleBurger());
@@ -51,9 +50,6 @@ export const navigate = e => {
 	    setTimeout(() => dispatch({ type: 'ROTATE_APP' }), int + 750);
 	    setTimeout(() => dispatch({ type: 'SHOW_LOADER' }), int + 900);
 	    setTimeout(() => dispatch({ type: 'SET_PAGE', page }), int + 1500);
-	    // setTimeout(() => dispatch(scaleOut()), int + 2000);
-	    // setTimeout(() => dispatch({ type: 'HIDE_LOADER' }), int + 2200);
-	    // setTimeout(() => dispatch({ type: 'FILL_SCREEN' }), int + 2750);
 		}
 	}
 }
@@ -65,4 +61,8 @@ export const arriveAtScreen = (timeLeft = 0) => {
 	  setTimeout(() => dispatch({ type: 'HIDE_LOADER' }), timeLeft + 200);
 	  setTimeout(() => dispatch({ type: 'FILL_SCREEN' }), timeLeft + 750);
 	}
+}
+
+export const setPage = page => {
+	return { type: 'SET_PAGE', page };
 }

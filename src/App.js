@@ -1,6 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { updateDimensions, updateMoveX, enterPage, movePage } from './Actions/Screen';
+import { setPage, navigate } from './Actions/Classes';
 import Header from './Components/Header';
 import Home from './Components/Home';
 import Menu from './Components/Menu';
@@ -19,24 +20,24 @@ class App extends Component {
     this.enterPage = this.enterPage.bind(this);
     this.movePage = this.movePage.bind(this);
     this.preload = this.preload.bind(this);
+    this.navigate = this.navigate.bind(this);
     this.events = this.bindEvents(this.deviceOrientation);
+    const initialLocation = window.location.hash;
+    if(initialLocation !== '' && initialLocation !== '#Home') {
+      this.props.setPage(initialLocation.slice(1))
+    } else {
+      window.location.hash = '#Home';
+    }
   }
 
   componentDidMount() {
-    const { updateDimensions, enterApp } = this.props;
-    window.addEventListener('resize', updateDimensions, true);
+    window.addEventListener('resize', this.props.updateDimensions, true);
     if(this.deviceOrientation) {
       window.addEventListener('deviceorientation', this.updateMoveX, true);
     } 
+    window.addEventListener('hashchange', this.navigate, true);
     document.body.style.height = window.innerHeight;
     document.body.style.width = window.innerWidth;
-  }
-
-  updateMoveX({ gamma }) {
-    const moveX = ((gamma + 90) * 100) / 180;
-    if(moveX !== 0 && moveX !== 100) {
-      this.props.updateMoveX(moveX);
-    }
   }
 
   shouldComponentUpdate({ page, appClasses, height, width }) {
@@ -54,6 +55,18 @@ class App extends Component {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && window.DeviceOrientationEvent){
       window.removeEventListener('deviceorientation', updateMoveX, true);
     } 
+    window.removeEventListener('hashchange', this.navigate, true);
+  }
+
+  updateMoveX({ gamma }) {
+    const moveX = ((gamma + 90) * 100) / 180;
+    if(moveX !== 0 && moveX !== 100) {
+      this.props.updateMoveX(moveX);
+    }
+  }
+
+  navigate() {
+    this.props.navigate(window.location.hash.slice(1));
   }
 
   preload() {
@@ -152,5 +165,7 @@ export default connect(mSTP, {
   updateDimensions, 
   updateMoveX,
   enterPage, 
-  movePage
+  movePage,
+  setPage,
+  navigate
 })(App);

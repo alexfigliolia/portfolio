@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { navigate } from '../../Actions/Classes';
 import Burger from './Burger';
 
-class Header extends Component {
+export default class Header extends Component {
+	constructor(props) {
+	  super(props);
+		this.navigate = this.navigate.bind(this);
+	}
 
 	shouldComponentUpdate() {
 		return false;
 	}
 
+	navigate() {
+		window.location.hash = 'Home';
+	}
+
 	render() {
-		const { navigate } = this.props;
 		return (
 			<header className="header">
 				<div>
-					<h1
-						data-page="Home"
-						onClick={navigate}>
+					<h1 onClick={this.navigate}>
 						{
 							'FIG'.split('').map(letter => {
 								return (
 									<div 
-										data-page="Home"
-										onClick={navigate}
+										onClick={this.navigate}
 										key={letter}>{letter}</div>
 								);
 							})
@@ -34,5 +36,3 @@ class Header extends Component {
 		);
 	}
 }
-
-export default connect(null, { navigate })(Header);

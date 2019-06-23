@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { 
 	arriveAtScreen,
 	setHomeClasses, 
-	leaveHome, 
-	navigate 
+	leaveHome
 } from '../../Actions/Classes';
 import $ from 'jquery';
 import ripples from 'ripples';
@@ -13,6 +12,10 @@ import BackgroundText from '../BackgroundText';
 import IntroText from './IntroText';
 
 class Home extends Component {
+	constructor(props) {
+	  super(props);
+		this.navigate = this.navigate.bind(this);
+	}
 	
 	componentDidMount() {
 		const { arriveAtScreen, setHomeClasses, preload } = this.props;
@@ -39,11 +42,14 @@ class Home extends Component {
 		return false;
 	}
 
+	navigate() {
+		window.location.hash = 'Work';
+	}
+
 	render() {
 		const { 
 			classes, 
-			transDur, 
-			navigate, 
+			transDur,
 			moveX,
 			events,
 		} = this.props;
@@ -62,7 +68,7 @@ class Home extends Component {
 					<IntroText />
 					<Button3D 
 						text="Work"
-						function={navigate} />
+						function={this.navigate} />
 				</div>
 			</section>
 		);
@@ -78,6 +84,5 @@ const mSTP = ({ Classes, Screen }) => {
 export default connect(mSTP, { 
 	arriveAtScreen,
 	setHomeClasses, 
-	leaveHome, 
-	navigate,
+	leaveHome
 })(Home);

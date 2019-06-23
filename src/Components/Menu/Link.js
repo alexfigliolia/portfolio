@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
-import { navigate } from '../../Actions/Classes';
 
 class Link extends Component {
   constructor(props) {
     super(props);
     this.state = { hovered: false };
     this.arr = this.props.pageTo.split("");
+    this.navigate = this.navigate.bind(this);
 		this.onTouchStart = this.onTouchStart.bind(this);
 		this.onTouchEnd = this.onTouchEnd.bind(this);
   }
@@ -42,8 +42,12 @@ class Link extends Component {
 		);
 	}
 
+	navigate() {
+		window.location.hash = this.props.pageTo;
+	}
+
   render() {
-  	const { menuClasses, page, pageTo, navigate } = this.props; 
+  	const { menuClasses, page, pageTo } = this.props; 
 		const d = menuClasses === "menu" || this.state.hovered ? 0 : 0.3;
     return (
       <div 
@@ -52,8 +56,7 @@ class Link extends Component {
 				onTouchEnd={this.onTouchEnd}
 				onMouseEnter={this.onTouchStart}
 				onMouseLeave={this.onTouchEnd}
-				onClick={navigate}  
-				data-page={pageTo}>
+				onClick={this.navigate}>
 				{this.getLetters('link-letter', d)}
 				<div className='inner'>
 					{this.getLetters(null, d)}
@@ -68,4 +71,4 @@ const mSTP = ({ Classes }) => {
 	return { menuClasses, page };
 }
 
-export default connect(mSTP, { navigate })(Link);
+export default connect(mSTP)(Link);

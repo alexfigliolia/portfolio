@@ -1,0 +1,82 @@
+.loader {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	@include center;
+	@include gradient;
+}
+
+.profile-main-loader {
+	@include center;
+}
+
+.loader .loads {
+  width: 150px;
+  height: 150px;
+}
+
+.loader .svg {
+  height: 150px;
+  width: 150px;
+  display: none;
+}
+
+.qp-circular-loader {
+  width:28px;  /* 2*RADIUS + STROKEWIDTH */
+  height:28px; /* 2*RADIUS + STROKEWIDTH */
+}
+.qp-circular-loader-path {
+  stroke-dasharray: 58.9;  /* 2*RADIUS*PI * ARCSIZE/360 */
+  stroke-dashoffset: 58.9; /* 2*RADIUS*PI * ARCSIZE/360 */
+                           /* hides things initially */
+}
+
+.qp-circular-loader, .qp-circular-loader * {
+  -webkit-transform-origin: 50% 50%;
+}
+
+@keyframes rotate {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(360deg);}
+}
+.qp-circular-loader {
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 1568.63ms; /* 360 * ARCTIME / (ARCSTARTROT + (360-ARCSIZE)) */
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+/* Filling and unfilling the arc */
+@keyframes fillunfill {
+  from {
+    stroke-dashoffset: 58.8 /* 2*RADIUS*PI * ARCSIZE/360 - 0.1 */
+                            /* 0.1 a bit of a magic constant here */
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -58.4 /* -(2*RADIUS*PI * ARCSIZE/360 - 0.5) */
+                             /* 0.5 a bit of a magic constant here */
+  }
+}
+@keyframes rot {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(-360deg);
+  }
+}
+.qp-circular-loader-path {
+  -webkit-animation-name: fillunfill, rot;
+  -webkit-animation-duration: 1333ms, 5332ms; /* ARCTIME, 4*ARCTIME, 4*ARCTIME */
+  -webkit-animation-iteration-count: infinite, infinite;
+  -webkit-animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1), steps(4);
+  -webkit-animation-play-state: running, running;
+  -webkit-animation-fill-mode: forwards;
+}	
+
+.loader-show .svg {
+	@include center;
+}

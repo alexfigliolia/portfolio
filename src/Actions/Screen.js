@@ -11,5 +11,5 @@ export const movePage = moveX => {
 }
 
 export const enterPage = moveX => {
-	return { type: 'MOVE_PAGE', moveX };
+	return { type: 'ENTER_PAGE', moveX };
 }

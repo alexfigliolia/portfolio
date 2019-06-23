@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { arriveAtScreen, setContactClasses, leaveContact } from '../../Actions/Classes';
-import { movePage, enterPage } from '../../Actions/Screen';
 import $ from 'jquery';
 import ripples from 'ripples';
 import Button3D from '../Button3D';
@@ -48,8 +47,7 @@ class Contact extends Component {
 
 	render() {
 		const { 
-			movePage, 
-			enterPage, 
+			events,
 			classes, 
 			moveX, 
 			transDur 
@@ -57,10 +55,7 @@ class Contact extends Component {
 		return (
 			<section 
 				id="contact"
-				onMouseMove={movePage}
-				onMouseEnter={enterPage}
-				onTouchMove={movePage}
-				onTouchStart={enterPage}
+				{...events}
 				className={classes}
 				style={{
 					backgroundPosition: moveX ? `${moveX}% 100%` : '50% 100%',
@@ -109,6 +104,4 @@ export default connect(mSTP, {
 	arriveAtScreen,
 	setContactClasses, 
 	leaveContact,
-	movePage, 
-	enterPage,
 })(Contact);

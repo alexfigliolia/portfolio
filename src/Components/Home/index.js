@@ -6,7 +6,6 @@ import {
 	leaveHome, 
 	navigate 
 } from '../../Actions/Classes';
-import { movePage, enterPage } from '../../Actions/Screen';
 import $ from 'jquery';
 import ripples from 'ripples';
 import Button3D from '../Button3D';
@@ -42,20 +41,16 @@ class Home extends Component {
 
 	render() {
 		const { 
-			movePage, 
-			enterPage, 
 			classes, 
 			transDur, 
 			navigate, 
-			moveX 
+			moveX,
+			events,
 		} = this.props;
 		return (
 			<section 
 				id="home"
-				onMouseMove={movePage}
-				onMouseEnter={enterPage}
-				onTouchMove={movePage}
-				onTouchStart={enterPage}
+				{...events}
 				className={classes}
 				style={{
 					backgroundPosition: moveX ? `${moveX}% 100%` : '50% 100%',
@@ -85,6 +80,4 @@ export default connect(mSTP, {
 	setHomeClasses, 
 	leaveHome, 
 	navigate,
-	movePage, 
-	enterPage,
 })(Home);

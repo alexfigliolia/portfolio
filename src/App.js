@@ -1,7 +1,6 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { updateDimensions, updateMoveX, enterPage, movePage } from './Actions/Screen';
-import { enterApp } from './Actions/Classes';
 import Header from './Components/Header';
 import Home from './Components/Home';
 import Menu from './Components/Menu';
@@ -15,21 +14,22 @@ class App extends Component {
     super(props);
     console.log('I am flattered');
     this.preloaded = null;
+    this.deviceOrientation = /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/.test(navigator.userAgent) && window.DeviceOrientationEvent;
     this.updateMoveX = this.updateMoveX.bind(this);
     this.enterPage = this.enterPage.bind(this);
     this.movePage = this.movePage.bind(this);
     this.preload = this.preload.bind(this);
+    this.events = this.bindEvents(this.deviceOrientation);
   }
 
   componentDidMount() {
     const { updateDimensions, enterApp } = this.props;
     window.addEventListener('resize', updateDimensions, true);
-    if(/Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/.test(navigator.userAgent) && window.DeviceOrientationEvent){
+    if(this.deviceOrientation) {
       window.addEventListener('deviceorientation', this.updateMoveX, true);
     } 
     document.body.style.height = window.innerHeight;
     document.body.style.width = window.innerWidth;
-    // enterApp();
   }
 
   updateMoveX({ gamma }) {
@@ -65,19 +65,15 @@ class App extends Component {
   }
 
   enterPage(e) {
-    if(!window.DeviceOrientationEvent) {
-      const { type, clientX, touches } = e;
-      const x = type === 'mouseenter' ? clientX : touches[0].clientX;
-      this.props.enterPage((x * 100)/window.innerWidth);
-    }
+    const { type, clientX, touches } = e;
+    const x = touches && type === 'touchstart' ? touches[0].clientX : clientX;
+    this.props.enterPage((x * 100)/window.innerWidth);
   }
 
   movePage(e) {
-    if(!window.DeviceOrientationEvent) {
-      const { type, clientX, touches } = e;
-      const x = type === 'mouseenter' ? clientX : touches[0].clientX;
-      this.props.movePage((x * 100)/window.innerWidth);
-    }
+    const { type, clientX, touches } = e;
+    const x = touches && type === 'touchmove' ? touches[0].clientX : clientX;
+    this.props.movePage((x * 100)/window.innerWidth);
   }
 
   getWork() {
@@ -88,6 +84,18 @@ class App extends Component {
     return lazy(() => import('./Components/Contact')); 
   }
 
+  bindEvents(support) {
+    // if(!support) {
+    //   return {
+    //     onMouseEnter: this.enterPage,
+    //     onTouchStart: this.enterPage,
+    //     onMouseMove: this.movePage,
+    //     onTouchMove: this.movePage,
+    //   };
+    // }
+    return {};
+  }
+
   renderPage(page) {
     switch (page) {
       case 'Work':
@@ -96,22 +104,17 @@ class App extends Component {
         return <Work />;
       case 'Contact':
         if(Contact) return (
-          <Contact
-            enterPage={this.enterPage}
-            movePage={this.movePage} /> 
+          <Contact events={this.events} /> 
         );
         Contact = this.getContact();
         return (
-          <Contact
-            enterPage={this.enterPage}
-            movePage={this.movePage} /> 
+          <Contact events={this.events} /> 
         );
       default:
         return (
           <Home 
             preload={this.preload}
-            enterPage={this.enterPage}
-            movePage={this.movePage} /> 
+            events={this.events} /> 
         );
     }
   }
@@ -147,8 +150,7 @@ const mSTP = ({ Screen , Classes }) => {
 
 export default connect(mSTP, { 
   updateDimensions, 
-  updateMoveX, 
-  enterApp, 
+  updateMoveX,
   enterPage, 
   movePage
 })(App);

@@ -12,18 +12,25 @@ class Loader extends Component {
       <section
         id='loader' 
         className={this.props.classes}>
-        <ul className='spinner'>
-          <li />
-          <li />
-          <li />
-          <li />
-          <li />
-          <li />
-          <li />
-          <li />
-          <li />
-          <li />
-        </ul>
+        <div>
+          <div className='showbox'>
+            <div className='svg-container'>
+              <svg 
+                className='circular' 
+                viewBox='25 25 50 50'>
+                <circle 
+                  className='path' 
+                  cx='50' 
+                  cy='50' 
+                  r='20' 
+                  fill='none' 
+                  stroke='#fff'
+                  strokeWidth='2' 
+                  strokeMiterlimit='10' />
+              </svg>
+            </div>
+          </div>
+        </div>
       </section>
     );
   }

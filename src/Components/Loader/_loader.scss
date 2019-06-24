@@ -2,154 +2,83 @@
   position: relative;
   height: 100%;
   width: 100%;
-  // @include center;
+  @include center;
   @include gradient;
+  backface-visibility: hidden;
+  transform: none;
+  &>div {
+    @include center;
+    width: 100%;
+    height: 100%;
+    &>.showbox {
+      @include center;
+      width: 150px;
+      height: 150px;
+    }
+  }
 }
 
-//---------------------------------------------------------------
-// .spinner
-//---------------------------------------------------------------
-$spinner-busy-color: #E5F0FF;
-$spinner-busy-glow: #ff4040;
-$spinner-busy-border: #ffc0c0;
+.svg-container {
+  width: 150px;
+  height: 150px;
+}
 
-$spinner-done-color: #008000;
-$spinner-done-glow: #fff;
-$spinner-done-border: #A9F6FC;
-
-$spinner-size: 30px;
-$spinner-color: $spinner-done-color;
-$spinner-glow: $spinner-done-glow;
-$spinner-border: $spinner-done-border;
-$spinner-delay: 1;
-$spinner-opacity: false !default;
-
-
-
-.spinner {
-  list-style: none;
-  width: 100%;
+.circular {
+  animation: rotate 2s linear infinite;
   height: 100%;
+  width: 100%;
+  transform-origin: center center;
   display: none;
-  li {
-    will-change: transform;
-    border-radius: 50%;
-    display: inline-block;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    animation: spinner-spin ($spinner-delay * 2.5) + s linear infinite;
-    &:after {
-      content: '';
-      display: block;
-      border-radius: 50%;
-      background: radial-gradient(circle at 25% 25%, #fff, rgba(255, 255, 255, 0));
-      background-color: rgba(255,255,255,0.5);
-      border: 0px solid $spinner-border;
-      height: ($spinner-size / 2);
-      width: ($spinner-size / 2);
-    }
+}
 
-    &:nth-child(1) {
-      animation-delay: ($spinner-delay * -2.5) + s;
-    }
 
-    &:nth-child(2) {
-      animation-delay: ($spinner-delay * -2.25) + s;
-    }
+.path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  animation: 
+   dash 1.5s ease-in-out infinite,
+   color 6s ease-in-out infinite
+  ;
+  stroke-linecap: round;
+}
 
-    &:nth-child(3) {
-      animation-delay: ($spinner-delay * -2) + s;
-    }
+@keyframes rotate{
+ 100%{
+  transform: rotate(360deg);
+ }
+}
 
-    &:nth-child(4) {
-      animation-delay: ($spinner-delay * -1.75) + s;
-    }
+@keyframes dash{
+ 0%{
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+ }
+ 50%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -35px;
+ }
+ 100%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -124px;
+ }
+}
 
-    &:nth-child(5) {
-      animation-delay: ($spinner-delay * -1.5) + s;
-    }
-
-    &:nth-child(6) {
-      animation-delay: ($spinner-delay * -1.25) + s;
-    }
-
-    &:nth-child(7) {
-      animation-delay: ($spinner-delay * -1.0) + s;
-    }
-
-    &:nth-child(8) {
-      animation-delay: ($spinner-delay * -0.75) + s;
-    }
-
-    &:nth-child(9) {
-      animation-delay: ($spinner-delay * -0.5) + s;
-    }
-
-    &:nth-child(10) {
-      animation-delay: ($spinner-delay * -0.25) + s;
-    }
+@keyframes color{
+  100%, 0%{
+    stroke: #fff;
   }
-
-  &.busy li:after {
-    background: radial-gradient(circle at 25% 25%, $spinner-busy-glow, rgba(255, 255, 255, 0));
-    background-color: $spinner-busy-color;
-    border: 0px solid $spinner-busy-border;
+  40%{
+    stroke: #fff;
   }
-
-  &.done li:after {
-    background: radial-gradient(circle at 25% 25%, $spinner-done-glow, rgba(255, 255, 255, 0));
-    background-color: $spinner-done-color;
-    border: 0px solid $spinner-done-border;
+  66%{
+    stroke: #fff;
+  }
+  80%, 90%{
+    stroke: #fff;
   }
 }
 
 
-
-
-
-@keyframes spinner-spin {
-  0% {
-    transform: scaleX(2) rotate(0deg) translateX($spinner-size) scale(1) rotate(0deg) scaleX(0.5);
-
-    @if $spinner-opacity == true {
-      opacity: 0.7;
-    }
-  }
-
-  25% {
-    transform: scaleX(2) rotate(90deg) translateX($spinner-size) scale(1.5) rotate(-90deg) scaleX(0.5);
-
-    @if $spinner-opacity == true {
-      opacity: 0.8;
-    }
-  }
-
-  50% {
-    transform: scaleX(2) rotate(180deg) translateX($spinner-size) scale(1) rotate(-180deg) scaleX(0.5);
-
-    @if $spinner-opacity == true {
-      opacity: 0.7;
-    }
-  }
-
-  75% {
-    transform: scaleX(2) rotate(270deg) translateX($spinner-size) scale(0.8) rotate(-270deg) scaleX(0.5);
-
-    @if $spinner-opacity == true {
-      opacity: 0.6;
-    }
-  }
-
-  100% {
-    transform: scaleX(2) rotate(360deg) translateX($spinner-size) scale(1) rotate(-360deg) scaleX(0.5);
-
-    @if $spinner-opacity == true {
-      opacity: 0.7;
-    }
-  }
-}
-
-.loader-show .spinner {
+.loader-show .circular {
 	display: initial;
 }

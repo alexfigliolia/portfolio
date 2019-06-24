@@ -1,6 +1,5 @@
 const initialState = {
 	appClasses: 'App App-drop App-rotate',
-  burgerClasses: 'hamburglar is-open',
   menuOpen: false,
   loaderClasses: 'loader loader-show',
   homeClasses: 'home',

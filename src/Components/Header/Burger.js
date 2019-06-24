@@ -4,19 +4,19 @@ import { toggleBurger } from '../../Actions/Classes';
 
 class Burger extends Component {
 
-  shouldComponentUpdate({ classes }) {
-    return classes !== this.props.classes;
+  shouldComponentUpdate({ menuOpen }) {
+    return menuOpen !== this.props.menuOpen;
   }
 
   render() {
-    const { toggleBurger, classes } = this.props;
+    const { toggleBurger, menuOpen } = this.props;
     return (
       <div 
         id='burg' 
         onClick={toggleBurger}>
         <div 
           id='hamburger' 
-          className={classes}>
+          className={menuOpen ? 'hamburglar is-closed' : 'hamburglar is-open'}>
             <div id='top' />
             <svg 
               id='svb' 
@@ -41,8 +41,8 @@ class Burger extends Component {
   }
 }
 
-const mSTP = ({ Classes: { burgerClasses }}) => {
-  return { classes: burgerClasses };
+const mSTP = ({ Classes: { menuOpen }}) => {
+  return { menuOpen };
 }
 
 export default connect(mSTP, { toggleBurger })(Burger);

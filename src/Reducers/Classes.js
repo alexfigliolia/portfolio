@@ -1,8 +1,7 @@
 const initialState = {
 	appClasses: 'App App-drop App-rotate',
   burgerClasses: 'hamburglar is-open',
-  burgerToggle: true,
-  menuClasses: 'menu',
+  menuOpen: false,
   loaderClasses: 'loader loader-show',
   homeClasses: 'home',
   contactClasses: 'home contact',
@@ -38,18 +37,8 @@ export default (state = initialState, action) => {
 			});
 		case 'LEAVE_CONTACT':
 			return Object.assign({}, state, { contactClasses: 'home contact'});
-		case 'TOGGLE_BURGER': {
-			const { burgerClasses, burgerToggle, menuClasses } = state;
-			return Object.assign({}, state, {
-				burgerToggle : !burgerToggle,
-        burgerClasses : (burgerClasses === 'hamburglar is-closed') ? 
-                          'hamburglar is-open' : 
-                          'hamburglar is-closed',
-        menuClasses: (menuClasses === 'menu') ?
-                      'menu menu-show' :
-                      'menu'
-			});
-		}
+		case 'TOGGLE_BURGER':
+			return Object.assign({}, state, { menuOpen: !state.menuOpen });
 		case 'SCALE_OUT':
 			return Object.assign({}, state, { appClasses: 'App App-drop' });
 		case 'ROTATE_APP':

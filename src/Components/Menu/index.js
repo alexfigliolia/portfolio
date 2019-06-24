@@ -4,14 +4,14 @@ import Link from './Link';
 
 class Menu extends Component {
 	
-	shouldComponentUpdate({ classes }) {
-		return classes !== this.props.classes;
+	shouldComponentUpdate({ menuOpen }) {
+		return menuOpen !== this.props.menuOpen;
 	}
 	
 	render() {
 		return (
-			<section className={this.props.classes}>
-				<div className="arrow"></div>
+			<section className={this.props.menuOpen ? 'menu menu-show' : 'menu'}>
+				<div className="arrow" />
 				<div className='links'>
 					<Link pageTo="Home" />
 					<Link pageTo="Work" />
@@ -22,8 +22,8 @@ class Menu extends Component {
 	}
 }
 
-const mSTP = ({ Classes: { menuClasses }}) => {
-	return { classes: menuClasses };
+const mSTP = ({ Classes: { menuOpen }}) => {
+	return { menuOpen };
 }
 
 export default connect(mSTP)(Menu);

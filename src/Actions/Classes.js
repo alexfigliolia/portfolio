@@ -42,8 +42,8 @@ export const scaleOut = () => {
 
 export const navigate = page => {
 	return (dispatch, getState) => {
-		const { page: currentPage, burgerToggle } = getState().Classes; 
-		const int = burgerToggle ? 0 : 800;
+		const { page: currentPage, menuOpen } = getState().Classes; 
+		const int = menuOpen ? 0 : 800;
 		if(int > 0) dispatch(toggleBurger());
 		if(page !== currentPage) {
 			setTimeout(() => dispatch(scaleOut()), int);

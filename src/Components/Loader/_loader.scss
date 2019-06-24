@@ -1,82 +1,155 @@
 .loader {
-	position: relative;
-	height: 100%;
-	width: 100%;
-	@include center;
-	@include gradient;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  // @include center;
+  @include gradient;
 }
 
-.profile-main-loader {
-	@include center;
-}
+//---------------------------------------------------------------
+// .spinner
+//---------------------------------------------------------------
+$spinner-busy-color: #E5F0FF;
+$spinner-busy-glow: #ff4040;
+$spinner-busy-border: #ffc0c0;
 
-.loader .loads {
-  width: 150px;
-  height: 150px;
-}
+$spinner-done-color: #008000;
+$spinner-done-glow: #fff;
+$spinner-done-border: #A9F6FC;
 
-.loader .svg {
-  height: 150px;
-  width: 150px;
+$spinner-size: 30px;
+$spinner-color: $spinner-done-color;
+$spinner-glow: $spinner-done-glow;
+$spinner-border: $spinner-done-border;
+$spinner-delay: 1;
+$spinner-opacity: false !default;
+
+
+
+.spinner {
+  list-style: none;
+  width: 100%;
+  height: 100%;
   display: none;
-}
+  li {
+    will-change: transform;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    animation: spinner-spin ($spinner-delay * 2.5) + s linear infinite;
+    &:after {
+      content: '';
+      display: block;
+      border-radius: 50%;
+      background: radial-gradient(circle at 25% 25%, #fff, rgba(255, 255, 255, 0));
+      background-color: rgba(255,255,255,0.5);
+      border: 0px solid $spinner-border;
+      height: ($spinner-size / 2);
+      width: ($spinner-size / 2);
+    }
 
-.qp-circular-loader {
-  width:28px;  /* 2*RADIUS + STROKEWIDTH */
-  height:28px; /* 2*RADIUS + STROKEWIDTH */
-}
-.qp-circular-loader-path {
-  stroke-dasharray: 58.9;  /* 2*RADIUS*PI * ARCSIZE/360 */
-  stroke-dashoffset: 58.9; /* 2*RADIUS*PI * ARCSIZE/360 */
-                           /* hides things initially */
-}
+    &:nth-child(1) {
+      animation-delay: ($spinner-delay * -2.5) + s;
+    }
 
-.qp-circular-loader, .qp-circular-loader * {
-  -webkit-transform-origin: 50% 50%;
-}
+    &:nth-child(2) {
+      animation-delay: ($spinner-delay * -2.25) + s;
+    }
 
-@keyframes rotate {
-  from {-webkit-transform: rotate(0deg);}
-  to {-webkit-transform: rotate(360deg);}
-}
-.qp-circular-loader {
-  -webkit-animation-name: rotate;
-  -webkit-animation-duration: 1568.63ms; /* 360 * ARCTIME / (ARCSTARTROT + (360-ARCSIZE)) */
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-}
+    &:nth-child(3) {
+      animation-delay: ($spinner-delay * -2) + s;
+    }
 
-/* Filling and unfilling the arc */
-@keyframes fillunfill {
-  from {
-    stroke-dashoffset: 58.8 /* 2*RADIUS*PI * ARCSIZE/360 - 0.1 */
-                            /* 0.1 a bit of a magic constant here */
+    &:nth-child(4) {
+      animation-delay: ($spinner-delay * -1.75) + s;
+    }
+
+    &:nth-child(5) {
+      animation-delay: ($spinner-delay * -1.5) + s;
+    }
+
+    &:nth-child(6) {
+      animation-delay: ($spinner-delay * -1.25) + s;
+    }
+
+    &:nth-child(7) {
+      animation-delay: ($spinner-delay * -1.0) + s;
+    }
+
+    &:nth-child(8) {
+      animation-delay: ($spinner-delay * -0.75) + s;
+    }
+
+    &:nth-child(9) {
+      animation-delay: ($spinner-delay * -0.5) + s;
+    }
+
+    &:nth-child(10) {
+      animation-delay: ($spinner-delay * -0.25) + s;
+    }
   }
+
+  &.busy li:after {
+    background: radial-gradient(circle at 25% 25%, $spinner-busy-glow, rgba(255, 255, 255, 0));
+    background-color: $spinner-busy-color;
+    border: 0px solid $spinner-busy-border;
+  }
+
+  &.done li:after {
+    background: radial-gradient(circle at 25% 25%, $spinner-done-glow, rgba(255, 255, 255, 0));
+    background-color: $spinner-done-color;
+    border: 0px solid $spinner-done-border;
+  }
+}
+
+
+
+
+
+@keyframes spinner-spin {
+  0% {
+    transform: scaleX(2) rotate(0deg) translateX($spinner-size) scale(1) rotate(0deg) scaleX(0.5);
+
+    @if $spinner-opacity == true {
+      opacity: 0.7;
+    }
+  }
+
+  25% {
+    transform: scaleX(2) rotate(90deg) translateX($spinner-size) scale(1.5) rotate(-90deg) scaleX(0.5);
+
+    @if $spinner-opacity == true {
+      opacity: 0.8;
+    }
+  }
+
   50% {
-    stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: -58.4 /* -(2*RADIUS*PI * ARCSIZE/360 - 0.5) */
-                             /* 0.5 a bit of a magic constant here */
-  }
-}
-@keyframes rot {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(-360deg);
-  }
-}
-.qp-circular-loader-path {
-  -webkit-animation-name: fillunfill, rot;
-  -webkit-animation-duration: 1333ms, 5332ms; /* ARCTIME, 4*ARCTIME, 4*ARCTIME */
-  -webkit-animation-iteration-count: infinite, infinite;
-  -webkit-animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1), steps(4);
-  -webkit-animation-play-state: running, running;
-  -webkit-animation-fill-mode: forwards;
-}	
+    transform: scaleX(2) rotate(180deg) translateX($spinner-size) scale(1) rotate(-180deg) scaleX(0.5);
 
-.loader-show .svg {
-	@include center;
+    @if $spinner-opacity == true {
+      opacity: 0.7;
+    }
+  }
+
+  75% {
+    transform: scaleX(2) rotate(270deg) translateX($spinner-size) scale(0.8) rotate(-270deg) scaleX(0.5);
+
+    @if $spinner-opacity == true {
+      opacity: 0.6;
+    }
+  }
+
+  100% {
+    transform: scaleX(2) rotate(360deg) translateX($spinner-size) scale(1) rotate(-360deg) scaleX(0.5);
+
+    @if $spinner-opacity == true {
+      opacity: 0.7;
+    }
+  }
+}
+
+.loader-show .spinner {
+	display: initial;
 }

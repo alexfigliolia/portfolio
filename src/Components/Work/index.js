@@ -65,12 +65,12 @@ class Work extends Component {
 		const { width, height, appClasses } = this.props; 
 		const pageLoaded = appClasses === 'App';
 		return (
-			<div className='work-wrapper' style={{height, width}}>
-				<div style={{ height, width, perspective: '1000px', position: 'relative' }}>
+			<div className='work-wrapper' style={{ height, width }}>
+				<div style={{ height, width }}>
 					{ width > 956 && <Controls scroll={this.scroll} /> }
 					<section 
 						className='work' 
-						style={{height, backgroundColor: '#fff'}} 
+						style={{ height }} 
 						id='slides'>
 						{
 							API.map((obj, i) => {

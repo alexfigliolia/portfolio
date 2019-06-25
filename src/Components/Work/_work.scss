@@ -8,15 +8,14 @@
 	backface-visibility: hidden;
 	transform-style: preserve-3d;
 	transform: translate3d(0,0,1px);
+	background: #fff;
+	&>div {
+		perspective: 1000px; 
+		position: relative;
+	}
 }
 
 .work {
-	// height: 100%;
-	// width: 100%;
-	// @include center;
-	// background: #000;
-	// position: relative;
-	// overflow-y: hidden;
 	transform-style: preserve-3d;
 	& div {
 		height: 100%;

@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://alexfigliolia.github.io/portfolio",
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "node-sass": "^4.12.0",
     "pageswitch": "^2.3.2",
     "react": "^16.8.6",
